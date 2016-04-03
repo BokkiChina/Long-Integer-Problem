@@ -15,6 +15,7 @@ struct node {
 
 void generateIntegerList(struct node **L);
 void printIntegerList(struct node *L);
+void operateIntegerList(struct node *L1, struct node *L2, struct node **L3);
 
 int main(int argc, char **argv) {
 
@@ -22,8 +23,23 @@ int main(int argc, char **argv) {
 
     struct node *num1;
     generateIntegerList(&num1);
-    printf("-----------\n");
     printIntegerList(num1);
+
+    printf("\n");
+
+    struct node *num2;
+    generateIntegerList(&num2);
+    printIntegerList(num2);
+
+    printf("\n");
+
+    if (num1->prev->number < 1000 || num2->prev->number < 1000) {
+        printf("尾数不合法\n");
+        exit(0);
+    }
+
+    struct node *num3; // result
+    operateIntegerList(num1, num2, &num3);
 
     printf("\n----------END----------\n");
 
@@ -115,4 +131,14 @@ void printIntegerList(struct node *L)
     }
     printf("\n");
 }
+
+void operateIntegerList(struct node *L1, struct node *L2, struct node **L3)
+{
+    struct node *p1 = L1->prev;
+    struct node *p2 = L2->prev;
+}
+
+
+
+
 
