@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
 
     struct node *num1;
     generateIntegerList(&num1);
+    printf("-----------\n");
     printIntegerList(num1);
 
     printf("\n----------END----------\n");
@@ -60,7 +61,7 @@ void generateIntegerList(struct node **L)
             continue;
         // meet number / ','
         if (ch >= '0' && ch <= '9') {
-            int num = (int)ch;
+            int num = ch - '0';
             if (rank < 4) {
                 numbers[rank] = num;
                 rank++;
@@ -68,17 +69,17 @@ void generateIntegerList(struct node **L)
         } else if (ch == ',' || ch == '\0') {
             // save numbers to a new node
             p->next = (struct node *)malloc(sizeof(struct node));
-            p->number = 0;
-            for (int k = rank - 1, j = 0; k >= 0; k++, j++) {
+            p->next->number = 0;
+            for (int k = rank - 1, j = 0; k >= 0; k--, j++) {
                 switch (j) {
                     case 0:
-                        p->number += numbers[k]; break;
+                        p->next->number += numbers[k]; break;
                     case 1:
-                        p->number += numbers[k] * 10; break;
+                        p->next->number += numbers[k] * 10; break;
                     case 2:
-                        p->number += numbers[k] * 100; break;
+                        p->next->number += numbers[k] * 100; break;
                     case 3:
-                        p->number += numbers[k] * 1000; break;
+                        p->next->number += numbers[k] * 1000; break;
                     default:
                         break;
                 }
