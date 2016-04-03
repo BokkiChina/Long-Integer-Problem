@@ -21,25 +21,28 @@ int main(int argc, char **argv) {
 
     printf("长整型数加减程序-王俊皓-2014101027\n\n");
 
+    // num1
     struct node *num1;
     generateIntegerList(&num1);
     printIntegerList(num1);
 
-    printf("\n");
-
+    // num2
     struct node *num2;
     generateIntegerList(&num2);
     printIntegerList(num2);
-
     printf("\n");
 
+    // checking
     if ((num1->prev->number < 1000 && abs(num1->number) > 1) || (num2->prev->number < 1000 && abs(num2->number) > 1)) {
         printf("尾数不合法\n");
         exit(0);
     }
 
-    struct node *num3; // result
-//    operateIntegerList(num1, num2, &num3);
+    // result
+    struct node *num3;
+    operateIntegerList(num1, num2, &num3);
+    printf("<输出结果>\n");
+    printIntegerList(num3);
 
     printf("\n----------END----------\n");
 
@@ -118,8 +121,14 @@ void printIntegerList(struct node *L)
 {
     printf("整数为: ");
     struct node *p = L->next;
+
+    //sign
+    if (L->number < 0)
+        printf("-");
+
+    // number
     for (int i = 0; i < abs(L->number); i++) {
-        if (i == 0 || i == abs(L->number) - 1) {
+        if (i == 0) {
             // first or last number
             printf("%d", p->number);
         } else {
@@ -170,7 +179,19 @@ void operateIntegerList(struct node *L1, struct node *L2, struct node **L3)
         p3->prev = (struct node *)malloc(sizeof(struct node));
         p3->prev->number = result;
         p3->prev->next = p3;
-        p3->prev->prev = (*L3)->next;
+        p3->prev->prev = (*L3)->prev;
+        (*L3)->number++;
+        p3 = p3->prev;
+
+        // new the last node for L3
+        if (i == max - 1 && carry > 0) {
+            p3->prev = (struct node *)malloc(sizeof(struct node));
+            p3->prev->number = carry;
+            p3->prev->next = p3;
+            p3->prev->prev = (*L3)->prev;
+            (*L3)->number++;
+            p3 = p3->prev;
+        }
     }
 }
 
