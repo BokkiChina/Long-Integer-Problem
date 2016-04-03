@@ -33,13 +33,13 @@ int main(int argc, char **argv) {
 
     printf("\n");
 
-    if (num1->prev->number < 1000 || num2->prev->number < 1000) {
+    if ((num1->prev->number < 1000 && abs(num1->number) > 1) || (num2->prev->number < 1000 && abs(num2->number) > 1)) {
         printf("尾数不合法\n");
         exit(0);
     }
 
     struct node *num3; // result
-    operateIntegerList(num1, num2, &num3);
+//    operateIntegerList(num1, num2, &num3);
 
     printf("\n----------END----------\n");
 
@@ -100,7 +100,7 @@ void generateIntegerList(struct node **L)
                         break;
                 }
             }
-            p->next->next = *L;
+            p->next->next = (*L)->next;
             p->next->prev = p;
             (*L)->prev = p->next;
             (*L)->number += 1 * s_flag;
@@ -136,6 +136,42 @@ void operateIntegerList(struct node *L1, struct node *L2, struct node **L3)
 {
     struct node *p1 = L1->prev;
     struct node *p2 = L2->prev;
+
+    struct node *p3 = (struct node *)malloc(sizeof(struct node));
+    p3->number = 0;
+    p3->next = p3;
+    p3->prev = p3;
+    *L3 = p3;
+
+    // number of nodes
+    int n1 = abs(L1->number);
+    int n2 = abs(L2->number);
+
+    // sign
+    int s1 = (L1->number > 0) ? 1 : -1;
+    int s2 = (L2->number > 0) ? 1 : -1;
+    int max = (n1 > n2) ? n1 : n2;
+
+    // for-in
+    int carry = 0; // carry number
+    for (int i = 0; i < max; i++) {
+        // addNum1
+        int addNum1 = 0;
+        if (i < n1) addNum1 = s1 * p1->number;
+        // addNum2
+        int addNum2 = 0;
+        if (i < n2) addNum2 = s2 * p2->number;
+        // result
+        int result = addNum1 + addNum2 + carry;
+        carry = result / 10000;
+        result = result % 10000;
+
+        // new a node for L3
+        p3->prev = (struct node *)malloc(sizeof(struct node));
+        p3->prev->number = result;
+        p3->prev->next = p3;
+        p3->prev->prev = (*L3)->next;
+    }
 }
 
 
