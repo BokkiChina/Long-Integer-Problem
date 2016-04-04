@@ -122,13 +122,25 @@ void printIntegerList(struct node *L)
 
     // number
     for (int i = 0; i < abs(L->number); i++) {
+        int flag = 1;
         if (i == 0) {
             // first or last number
-            printf("%d", p->number);
+            if (p->number != 0)
+                printf("%d", p->number);
+            else
+                flag = 0;
+        } else if (i == abs(L->number) - 1) {
+            if (L->next->number != 0 && abs(L->number) > 1)
+                printf("%04d", p->number);
+            else
+                printf("%d", p->number);
         } else {
-            printf("%04d", p->number);
+            if (!(p->number == 0 && p->prev->number == 0))
+                printf("%04d", p->number);
+            else
+                flag = 0;
         }
-        if (i < abs(L->number) - 1)
+        if (i < abs(L->number) - 1 && flag == 1)
             printf(",");
         p = p->next;
     }
