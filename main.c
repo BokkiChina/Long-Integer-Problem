@@ -32,12 +32,6 @@ int main(int argc, char **argv) {
     printIntegerList(num2);
     printf("\n");
 
-    // checking
-    if ((num1->prev->number < 1000 && abs(num1->number) > 1) || (num2->prev->number < 1000 && abs(num2->number) > 1)) {
-        printf("尾数不合法\n");
-        exit(0);
-    }
-
     // result
     struct node *num3;
     operateIntegerList(num1, num2, &num3);
@@ -104,7 +98,7 @@ void generateIntegerList(struct node **L)
                 }
             }
             p->next->next = (*L)->next;
-            p->next->prev = p;
+            p->next->prev = (p != *L) ? p : (*L)->prev;
             (*L)->prev = p->next;
             (*L)->number += 1 * s_flag;
             p = p->next;
@@ -166,29 +160,37 @@ void operateIntegerList(struct node *L1, struct node *L2, struct node **L3)
     for (int i = 0; i < max; i++) {
         // addNum1
         int addNum1 = 0;
-        if (i < n1) addNum1 = s1 * p1->number;
+        if (i < n1) {
+            addNum1 = s1 * p1->number;
+            p1 = p1->prev;
+        }
         // addNum2
         int addNum2 = 0;
-        if (i < n2) addNum2 = s2 * p2->number;
+        if (i < n2) {
+            addNum2 = s2 * p2->number;
+            p2 = p2->prev;
+        }
         // result
         int result = addNum1 + addNum2 + carry;
-        carry = result / 10000;
+        carry = result / 10000; // carry must be positive
         result = result % 10000;
 
         // new a node for L3
         p3->prev = (struct node *)malloc(sizeof(struct node));
         p3->prev->number = result;
-        p3->prev->next = p3;
+        p3->prev->next = (p3 != *L3) ? p3 : (*L3)->next;
         p3->prev->prev = (*L3)->prev;
+        (*L3)->next = p3->prev;
         (*L3)->number++;
         p3 = p3->prev;
 
         // new the last node for L3
-        if (i == max - 1 && carry > 0) {
+        if (i == max - 1 && carry != 0) {
             p3->prev = (struct node *)malloc(sizeof(struct node));
             p3->prev->number = carry;
-            p3->prev->next = p3;
+            p3->prev->next = (p3 != *L3) ? p3 : (*L3)->next;
             p3->prev->prev = (*L3)->prev;
+            (*L3)->next = p3->prev;
             (*L3)->number++;
             p3 = p3->prev;
         }
