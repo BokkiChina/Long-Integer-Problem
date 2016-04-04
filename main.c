@@ -326,17 +326,6 @@ void operateIntegerList(struct node *L1, struct node *L2, struct node **L3)
             (*L3)->next = p3->prev;
             (*L3)->number += sign;
             p3 = p3->prev;
-
-//            // new the last node for L3
-//            if (i == max - 1 && carry != 0) {
-//                p3->prev = (struct node *)malloc(sizeof(struct node));
-//                p3->prev->number = carry;
-//                p3->prev->next = (p3 != *L3) ? p3 : (*L3)->next;
-//                p3->prev->prev = (*L3)->prev;
-//                (*L3)->next = p3->prev;
-//                (*L3)->number += sign;
-//                p3 = p3->prev;
-//            }
         }
     }
 }
