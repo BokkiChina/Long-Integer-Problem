@@ -21,22 +21,30 @@ int main(int argc, char **argv) {
 
     printf("长整型数加减程序-王俊皓-2014101027\n\n");
 
-    // num1
-    struct node *num1;
-    generateIntegerList(&num1);
-    printIntegerList(num1);
+    while (1) {
+        // num1
+        struct node *num1;
+        generateIntegerList(&num1);
+        printIntegerList(num1);
 
-    // num2
-    struct node *num2;
-    generateIntegerList(&num2);
-    printIntegerList(num2);
-    printf("\n");
+        // num2
+        struct node *num2;
+        generateIntegerList(&num2);
+        printIntegerList(num2);
+        printf("\n");
 
-    // result
-    struct node *num3;
-    operateIntegerList(num1, num2, &num3);
-    printf("<输出结果>\n");
-    printIntegerList(num3);
+        // result
+        struct node *num3;
+        operateIntegerList(num1, num2, &num3);
+        printf("<输出结果>\n");
+        printIntegerList(num3);
+
+        free(num1);
+        free(num2);
+        free(num3);
+
+        printf("\n");
+    }
 
     printf("\n----------END----------\n");
 
